@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>EchoLearn · AI Interview Coach</title>
+    <style>
+        /* inline CSS only — no external files */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fc 0%, #eef2f9 100%);
+            font-family: system-ui, 'Segoe UI', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            min-height: 100vh;
+            padding: 24px 20px;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        /* header */
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            margin-bottom: 32px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid rgba(108, 60, 229, 0.2);
+        }
+
+        .logo-area h1 {
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, #0B2F9E, #5F2EEA);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            font-weight: 800;
+        }
+
+        .logo-area p {
+            font-size: 0.8rem;
+            color: #5b6e8c;
+            margin-top: 4px;
+        }
+
+        .back-link {
+            color: #5F2EEA;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.2s;
+        }
+
+        .back-link:hover {
+            opacity: 0.7;
+        }
+
+        /* main grid: left input, right history */
+        .dashboard {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 28px;
+        }
+
+        .input-panel {
+            flex: 1.2;
+            min-width: 280px;
+            background: white;
+            border-radius: 32px;
+            padding: 28px;
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.2s ease;
+            height: fit-content;
+        }
+
+        .history-panel {
+            flex: 0.9;
+            min-width: 280px;
+            background: white;
+            border-radius: 32px;
+            padding: 28px;
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.06);
+        }
+
+        /* form elements */
+        .voice-selector {
+            margin-bottom: 24px;
+        }
+
+        label {
+            font-weight: 600;
+            color: #1e293b;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        select {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 24px;
+            border: 1.5px solid #e2e8f0;
+            background: white;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #0f172a;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #5F2EEA;
+            box-shadow: 0 0 0 3px rgba(95, 46, 234, 0.1);
+        }
+
+        .input-group {
+            margin-bottom: 24px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 16px 18px;
+            border-radius: 24px;
+            border: 1.5px solid #e2e8f0;
+            font-size: 1rem;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 120px;
+            transition: all 0.2s;
+            background: #fefefe;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #5F2EEA;
+            box-shadow: 0 0 0 3px rgba(95, 46, 234, 0.1);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin: 16px 0 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(105deg, #0F2B9E, #6C3CE5);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex: 1;
+            min-width: 130px;
+            box-shadow: 0 4px 10px rgba(108, 60, 229, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 20px -10px rgba(108, 60, 229, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            border: 1.5px solid #cbd5e1;
+            color: #2d3a5e;
+            padding: 14px 24px;
+            border-radius: 40px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex: 1;
+        }
+
+        .btn-secondary:hover {
+            border-color: #5F2EEA;
+            background: #f8f4ff;
+        }
+
+        /* corrected text display */
+        .correction-area {
+            background: #f8fafc;
+            border-radius: 24px;
+            padding: 18px;
+            margin: 20px 0;
+            border-left: 4px solid #5F2EEA;
+        }
+
+        .correction-title {
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .corrected-text {
+            color: #1e293b;
+            line-height: 1.5;
+            font-size: 1rem;
+            font-weight: 500;
+            word-break: break-word;
+        }
+
+        .audio-player {
+            margin-top: 16px;
+            width: 100%;
+        }
+
+        audio {
+            width: 100%;
+            border-radius: 60px;
+            outline: none;
+        }
+
+        /* history items */
+        .history-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            max-height: 500px;
+            overflow-y: auto;
+            padding-right: 6px;
+        }
+
+        .history-item {
+            background: #f9f9ff;
+            border-radius: 20px;
+            padding: 16px;
+            transition: all 0.2s;
+            border: 1px solid #edf2f7;
+        }
+
+        .history-item:hover {
+            background: #ffffff;
+            border-color: #d9c9ff;
+            transform: translateX(4px);
+        }
+
+        .history-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.7rem;
+            color: #6c5b7b;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .history-original {
+            font-size: 0.85rem;
+            color: #475569;
+            margin-bottom: 8px;
+            word-break: break-word;
+        }
+
+        .history-corrected {
+            font-weight: 600;
+            color: #2d3a5e;
+            background: #f1f0fe;
+            padding: 8px 12px;
+            border-radius: 14px;
+            font-size: 0.85rem;
+            margin: 8px 0;
+        }
+
+        .play-history-btn {
+            background: none;
+            border: none;
+            color: #5F2EEA;
+            font-size: 0.75rem;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 8px;
+            padding: 4px 12px;
+            border-radius: 30px;
+            transition: all 0.2s;
+        }
+
+        .play-history-btn:hover {
+            background: #e9e4ff;
+        }
+
+        .empty-history {
+            text-align: center;
+            color: #94a3b8;
+            padding: 40px 20px;
+            font-style: italic;
+        }
+
+        /* loading state */
+        .loading {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+            margin-left: 8px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .status-msg {
+            font-size: 0.8rem;
+            margin-top: 12px;
+            color: #5b6e8c;
+        }
+
+        @media (max-width: 780px) {
+            body {
+                padding: 16px;
+            }
+            .input-panel, .history-panel {
+                padding: 20px;
+            }
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="app-header">
+        <div class="logo-area">
+            <h1>🎤 EchoLearn Studio</h1>
+            <p>AI interview coach · real corrections + voice synthesis</p>
+        </div>
+        <a href="index.html" class="back-link">← Back to home</a>
+    </div>
+
+    <div class="dashboard">
+        <!-- LEFT: input panel -->
+        <div class="input-panel">
+            <div class="voice-selector">
+                <label>🎙️ Select AI Voice</label>
+                <select id="voiceSelect">
+                    <option value="deep_male">Deep Male (authoritative)</option>
+                    <option value="smooth_male">Smooth Male (warm)</option>
+                    <option value="smooth_female" selected>Smooth Female (clear)</option>
+                    <option value="deep_female">Deep Female (confident)</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>📝 Your message / interview answer</label>
+                <textarea id="userInput" placeholder="Type your sentence here... e.g., 'I have 5 year of experience in software development.'"></textarea>
+            </div>
+
+            <div class="button-group">
+                <button class="btn-primary" id="sendBtn">✨ Send & Correct</button>
+                <button class="btn-secondary" id="voiceInputBtn">🎤 Voice Input</button>
+            </div>
+
+            <!-- corrected text and audio display -->
+            <div id="correctionResult" style="display: none;" class="correction-area">
+                <div class="correction-title">✅ AI Corrected Version</div>
+                <div class="corrected-text" id="correctedTextDisplay">—</div>
+                <div class="audio-player" id="audioPlayerContainer" style="margin-top: 16px;"></div>
+            </div>
+            <div id="apiStatus" class="status-msg"></div>
+        </div>
+
+        <!-- RIGHT: chat history (last 5 responses) -->
+        <div class="history-panel">
+            <div class="history-title">
+                <span>📋 Recent corrections</span>
+                <span style="font-size: 0.7rem; background: #ede9fe; padding: 2px 10px; border-radius: 40px;">last 5</span>
+            </div>
+            <div id="historyList" class="history-list">
+                <div class="empty-history">✨ Your corrected responses will appear here.<br>Send a message to start.</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // -------------------------------
+    // INLINE JS — No external dependencies
+    // -------------------------------
+    
+    // store chat history (max 5)
+    let chatHistory = [];  // each entry: { original, corrected, audioBlobUrl?, voiceUsed, timestamp }
+    
+    // references
+    const userInput = document.getElementById('userInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const voiceInputBtn = document.getElementById('voiceInputBtn');
+    const voiceSelect = document.getElementById('voiceSelect');
+    const correctionResultDiv = document.getElementById('correctionResult');
+    const correctedTextSpan = document.getElementById('correctedTextDisplay');
+    const audioPlayerContainer = document.getElementById('audioPlayerContainer');
+    const historyListDiv = document.getElementById('historyList');
+    const apiStatusSpan = document.getElementById('apiStatus');
+    
+    // current audio element reference to avoid duplicate
+    let currentAudio = null;
+    
+    // helper to render history UI
+    function renderHistory() {
+        if (!historyListDiv) return;
+        if (chatHistory.length === 0) {
+            historyListDiv.innerHTML = `<div class="empty-history">✨ Your corrected responses will appear here.<br>Send a message to start.</div>`;
+            return;
+        }
+        
+        // show only last 5 (already ensured)
+        const reversed = [...chatHistory].reverse(); // newest first display
+        historyListDiv.innerHTML = reversed.map((item, idx) => {
+            const timeStr = item.timestamp ? new Date(item.timestamp).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) : 'just now';
+            // store audio blob URL if exists
+            const audioUrl = item.audioBlobUrl || null;
+            return `
+                <div class="history-item" data-history-idx="${chatHistory.length - 1 - idx}">
+                    <div class="history-meta">
+                        <span>🎤 ${item.voiceUsed || 'voice'}</span>
+                        <span>${timeStr}</span>
+                    </div>
+                    <div class="history-original">📥 "${escapeHtml(item.original.length > 70 ? item.original.substring(0,70)+'…' : item.original)}"</div>
+                    <div class="history-corrected">✨ ${escapeHtml(item.corrected)}</div>
+                    ${audioUrl ? `<button class="play-history-btn" data-audio-url="${audioUrl}">🔊 Play this correction</button>` : '<span style="font-size:0.7rem; color:#aaa;">🔇 no audio</span>'}
+                </div>
+            `;
+        }).join('');
+        
+        // attach event listeners to each history play button
+        document.querySelectorAll('.play-history-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const audioUrl = btn.getAttribute('data-audio-url');
+                if (audioUrl) {
+                    if (currentAudio) {
+                        currentAudio.pause();
+                        currentAudio = null;
+                    }
+                    const audio = new Audio(audioUrl);
+                    currentAudio = audio;
+                    audio.play().catch(err => console.warn("playback error", err));
+                }
+            });
+        });
+    }
+    
+    // simple escape to avoid XSS
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+            return c;
+        });
+    }
+    
+    // add to history (maintain last 5)
+    function addToHistory(original, corrected, voiceUsed, audioBlobUrl = null) {
+        const newEntry = {
+            original: original,
+            corrected: corrected,
+            voiceUsed: voiceUsed,
+            timestamp: new Date(),
+            audioBlobUrl: audioBlobUrl
+        };
+        chatHistory.push(newEntry);
+        // keep only last 5
+        while (chatHistory.length > 5) {
+            const removed = chatHistory.shift();
+            if (removed && removed.audioBlobUrl && removed.audioBlobUrl.startsWith('blob:')) {
+                // revoke blob URL to avoid memory leaks
+                URL.revokeObjectURL(removed.audioBlobUrl);
+            }
+        }
+        renderHistory();
+    }
+    
+    // core API call to /api/correct (POST) as per api.js backend expectation
+    async function callCorrectionAPI(text, voiceType) {
+        if (!text || text.trim() === '') {
+            apiStatusSpan.innerText = '⚠️ Please enter some text or use voice input.';
+            return null;
+        }
+        apiStatusSpan.innerText = '🔄 Sending to AI coach...';
+        correctionResultDiv.style.display = 'none';
+        
+        const payload = {
+            text: text.trim(),
+            voice: voiceType
+        };
+        
+        try {
+            // fetch to backend API (relative path /api/correct, will be handled by api.js on vercel)
+            const response = await fetch('/api/correct', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload)
+            });
+            
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`API error (${response.status}): ${errorText}`);
+            }
+            
+            const data = await response.json();
+            // expected format: { correctedText: string, audioBase64?: string, audioUrl?: string }
+            // api.js should return either audioBase64 or direct audio URL. We'll handle both.
+            let corrected = data.correctedText || data.corrected || "Your refined version: " + text.trim();
+            let audioData = data.audioBase64 || data.audioUrl || null;
+            let audioBlobUrl = null;
+            
+            // If backend returns base64 audio
+            if (audioData && typeof audioData === 'string' && audioData.startsWith('data:audio')) {
+                // create blob from dataURL
+                try {
+                    const byteString = atob(audioData.split(',')[1]);
+                    const mimeString = audioData.split(',')[0].split(':')[1].split(';')[0];
+                    const ab = new ArrayBuffer(byteString.length);
+                    const ia = new Uint8Array(ab);
+                    for (let i = 0; i < byteString.length; i++) {
+                        ia[i] = byteString.charCodeAt(i);
+                    }
+                    const blob = new Blob([ab], { type: mimeString });
+                    audioBlobUrl = URL.createObjectURL(blob);
+                } catch(e) {
+                    console.warn("base64 decode error", e);
+                }
+            } else if (audioData && typeof audioData === 'string' && (audioData.startsWith('http') || audioData.startsWith('/'))) {
+                audioBlobUrl = audioData; // direct url
+            }
+            
+            // display corrected text
+            correctedTextSpan.innerText = corrected;
+            correctionResultDiv.style.display = 'block';
+            
+            // audio player
+            audioPlayerContainer.innerHTML = '';
+            if (audioBlobUrl) {
+                const audioElem = document.createElement('audio');
+                audioElem.controls = true;
+                audioElem.src = audioBlobUrl;
+                audioElem.style.width = '100%';
+                audioElem.style.borderRadius = '40px';
+                audioPlayerContainer.appendChild(audioElem);
+                // auto play small hint (optional)
+                audioElem.play().catch(e => console.log("autoplay blocked"));
+                if (currentAudio && currentAudio !== audioElem) currentAudio.pause();
+                currentAudio = audioElem;
+            } else {
+                audioPlayerContainer.innerHTML = '<p style="font-size:0.75rem; color:#6b7280;">🔊 (No audio generated by API, but text correction ready)</p>';
+            }
+            
+            apiStatusSpan.innerText = '✅ Response received!';
+            
+            // add to history with audio blob url
+            addToHistory(text.trim(), corrected, voiceType, audioBlobUrl);
+            
+            return { corrected, audioBlobUrl };
+        } catch (err) {
+            console.error("API call failed:", err);
+            apiStatusSpan.innerText = `❌ Error: ${err.message}. Using fallback simulation (mock).`;
+            // FALLBACK: mock correction + mock tts simulation using Web Speech API (browser tts) for demo when backend missing
+            const mockCorrected = mockCorrection(text.trim());
+            correctedTextSpan.innerText = mockCorrected;
+            correctionResultDiv.style.display = 'block';
+            audioPlayerContainer.innerHTML = '';
+            // Use browser speech synthesis as fallback (simulate audio)
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(mockCorrected);
+                let voiceNameMap = { deep_male: 'Google UK English Male', smooth_male: 'Samantha', smooth_female: 'Google UK English Female', deep_female: 'Victoria' };
+                let selectedVoiceType = voiceType;
+                const voices = window.speechSynthesis.getVoices();
+                const preferredVoice = voices.find(v => v.name.includes(voiceNameMap[selectedVoiceType]?.split(' ')[0]) || 
+                    (selectedVoiceType.includes('male') && v.name.includes('Male')) ||
+                    (selectedVoiceType.includes('female') && v.name.includes('Female')));
+                if (preferredVoice) utterance.voice = preferredVoice;
+                window.speechSynthesis.cancel();
+                window.speechSynthesis.speak(utterance);
+                audioPlayerContainer.innerHTML = '<p style="font-size:0.75rem;">🎧 Browser TTS (fallback) playing corrected version</p>';
+            } else {
+                audioPlayerContainer.innerHTML = '<p>🔊 Audio not available (fallback mode)</p>';
+            }
+            addToHistory(text.trim(), mockCorrected, voiceType, null);
+            return { corrected: mockCorrected };
+        }
+    }
+    
+    // simple mock correction for offline / demo
+    function mockCorrection(original) {
+        let corrected = original;
+        if (original.match(/\byear\b/i) && original.match(/\bhave\b/i) && original.match(/\bexperience\b/i)) {
+            corrected = original.replace(/\b(\d+) year\b/i, '$1 years');
+        }
+        if (original.match(/i is/i)) corrected = corrected.replace(/i is/i, 'I am');
+        if (!corrected.includes('improved')) corrected = corrected + " (✨ refined by EchoLearn)";
+        return corrected;
+    }
+    
+    // send button handler
+    async function handleSend() {
+        const text = userInput.value;
+        if (!text.trim()) {
+            apiStatusSpan.innerText = 'Please type something or use voice input.';
+            return;
+        }
+        const voice = voiceSelect.value;
+        await callCorrectionAPI(text, voice);
+    }
+    
+    // voice input using Web Speech API (inline, no external)
+    function startVoiceInput() {
+        if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+            apiStatusSpan.innerText = '❌ Voice input not supported in this browser. Try Chrome/Edge/Safari.';
+            return;
+        }
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const recognition = new SpeechRecognition();
+        recognition.lang = 'en-US';
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+        
+        apiStatusSpan.innerText = '🎙️ Listening... speak your sentence.';
+        voiceInputBtn.disabled = true;
+        voiceInputBtn.textContent = '🎤 Listening...';
+        
+        recognition.start();
+        
+        recognition.onresult = (event) => {
+            const transcript = event.results[0][0].transcript;
+            userInput.value = transcript;
+            apiStatusSpan.innerText = `✅ Voice captured: "${transcript}"`;
+            voiceInputBtn.disabled = false;
+            voiceInputBtn.textContent = '🎤 Voice Input';
+        };
+        
+        recognition.onerror = (event) => {
+            apiStatusSpan.innerText = `⚠️ Voice error: ${event.error}`;
+            voiceInputBtn.disabled = false;
+            voiceInputBtn.textContent = '🎤 Voice Input';
+        };
+        
+        recognition.onend = () => {
+            if (voiceInputBtn.disabled) {
+                voiceInputBtn.disabled = false;
+                voiceInputBtn.textContent = '🎤 Voice Input';
+            }
+        };
+    }
+    
+    // attach event listeners
+    sendBtn.addEventListener('click', handleSend);
+    voiceInputBtn.addEventListener('click', startVoiceInput);
+    
+    // optional enter key shortcut (ctrl+enter)
+    userInput.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+            e.preventDefault();
+            handleSend();
+        }
+    });
+    
+    // prefill example text for better UX
+    userInput.placeholder = "e.g., I have 5 year of experience... or 'Tell me about yourself' interview answer";
+    
+    // Ensure speech synthesis voices load on interaction hint
+    if ('speechSynthesis' in window) {
+        window.speechSynthesis.getVoices();
+    }
+    
+    // cleanup on page unload (revoke blob URLs)
+    window.addEventListener('beforeunload', () => {
+        chatHistory.forEach(item => {
+            if (item.audioBlobUrl && item.audioBlobUrl.startsWith('blob:')) {
+                URL.revokeObjectURL(item.audioBlobUrl);
+            }
+        });
+        if (currentAudio) {
+            currentAudio.pause();
+        }
+    });
+</script>
+</body>
+</html>
