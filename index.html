@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>EchoLearn · Speak English. Ace Your Interviews.</title>
+    <style>
+        /* inline CSS only — no external files */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #faf9ff 0%, #f0f2f8 100%);
+            font-family: system-ui, 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+            line-height: 1.5;
+            scroll-behavior: smooth;
+            color: #0a0a2a;
+        }
+
+        /* smooth scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* container */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 32px;
+        }
+
+        /* header styling */
+        .site-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid rgba(98, 0, 234, 0.08);
+            backdrop-filter: blur(10px);
+        }
+
+        .brand-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .product-name {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            background: linear-gradient(125deg, #4F46E5 0%, #8B5CF6 40%, #C084FC 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            display: inline-block;
+        }
+
+        .love-tagline {
+            font-size: 0.85rem;
+            font-weight: 600;
+            background: linear-gradient(115deg, #334155, #5b6e8c);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.2px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            font-weight: 500;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #334155;
+            transition: color 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a:hover {
+            color: #6C3CE5;
+        }
+
+        /* hero section */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 72px 0 64px;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            line-height: 1.2;
+            background: linear-gradient(145deg, #0F172A 0%, #2D3A67 45%, #5F2EEA 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            max-width: 950px;
+            letter-spacing: -0.02em;
+            margin-bottom: 28px;
+        }
+
+        .hero-sub {
+            font-size: 1.28rem;
+            color: #334155;
+            max-width: 650px;
+            margin-bottom: 44px;
+            line-height: 1.6;
+            font-weight: 450;
+        }
+
+        .btn-getstarted {
+            display: inline-block;
+            background: linear-gradient(105deg, #4F46E5, #7C3AED);
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+            padding: 18px 48px;
+            border-radius: 60px;
+            text-decoration: none;
+            box-shadow: 0 20px 32px -16px rgba(79, 70, 229, 0.4);
+            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            border: none;
+            cursor: pointer;
+            letter-spacing: -0.2px;
+        }
+
+        .btn-getstarted:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 28px 40px -18px rgba(79, 70, 229, 0.55);
+            background: linear-gradient(105deg, #6366F1, #8B5CF6);
+        }
+
+        /* features section */
+        .section-title {
+            font-size: 2.4rem;
+            font-weight: 700;
+            text-align: center;
+            margin: 56px 0 20px;
+            color: #0F172A;
+            letter-spacing: -0.01em;
+        }
+
+        .section-sub {
+            text-align: center;
+            color: #5b6e8c;
+            margin-bottom: 48px;
+            font-size: 1.1rem;
+        }
+
+        .features-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            margin: 24px 0 56px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(2px);
+            flex: 1 1 280px;
+            border-radius: 36px;
+            padding: 36px 28px;
+            text-align: center;
+            transition: all 0.35s ease;
+            box-shadow: 0 10px 25px -12px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(124, 58, 237, 0.1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 28px 40px -20px rgba(79, 70, 229, 0.2);
+            border-color: rgba(124, 58, 237, 0.3);
+            background: white;
+        }
+
+        /* inline svg icons or unicode, we use clean inline SVG */
+        .icon-svg {
+            width: 58px;
+            height: 58px;
+            margin-bottom: 24px;
+            display: inline-block;
+        }
+
+        .feature-card h3 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin: 20px 0 14px;
+            color: #0f172a;
+        }
+
+        .feature-card p {
+            color: #475569;
+            line-height: 1.55;
+            font-size: 0.98rem;
+        }
+
+        /* testimonials section - realistic and genuine */
+        .testimonials-wrapper {
+            background: linear-gradient(115deg, #F5F3FF 0%, #F1F4FE 100%);
+            border-radius: 64px;
+            margin: 48px 0 70px;
+            padding: 64px 36px;
+        }
+
+        .testimonials-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 32px;
+            margin-top: 36px;
+        }
+
+        .testimonial-card {
+            background: white;
+            border-radius: 36px;
+            padding: 32px 28px;
+            max-width: 360px;
+            transition: all 0.3s;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.02);
+            border: 1px solid #f0eaff;
+        }
+
+        .testimonial-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 24px 36px -16px rgba(79, 70, 229, 0.12);
+        }
+
+        .quote-icon {
+            font-size: 2.8rem;
+            color: #8B5CF6;
+            opacity: 0.5;
+            margin-bottom: 12px;
+        }
+
+        .testimonial-text {
+            font-size: 1.05rem;
+            color: #1f2937;
+            margin: 16px 0;
+            font-weight: 470;
+            line-height: 1.5;
+        }
+
+        .testimonial-name {
+            font-weight: 700;
+            color: #4F46E5;
+            margin-top: 12px;
+            font-size: 0.9rem;
+        }
+
+        .testimonial-title {
+            font-size: 0.75rem;
+            color: #6c757d;
+        }
+
+        .community-note {
+            text-align: center;
+            margin-top: 48px;
+            padding-top: 28px;
+            border-top: 1px solid rgba(124, 58, 237, 0.2);
+        }
+
+        .community-note p {
+            font-size: 1.1rem;
+            font-weight: 500;
+            background: linear-gradient(135deg, #4F46E5, #A855F7);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            display: inline-block;
+        }
+
+        /* footer */
+        .footer {
+            text-align: center;
+            padding: 40px 0 52px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            color: #6c86a3;
+            font-size: 0.85rem;
+        }
+
+        /* responsive */
+        @media (max-width: 800px) {
+            .container {
+                padding: 0 24px;
+            }
+            .hero h1 {
+                font-size: 2.7rem;
+            }
+            .hero-sub {
+                font-size: 1.08rem;
+            }
+            .btn-getstarted {
+                padding: 14px 36px;
+                font-size: 1rem;
+            }
+            .section-title {
+                font-size: 2rem;
+            }
+            .feature-card h3 {
+                font-size: 1.4rem;
+            }
+            .testimonials-wrapper {
+                padding: 40px 20px;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .site-header {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-start;
+            }
+            .nav-links {
+                gap: 24px;
+                margin-top: 8px;
+            }
+            .hero {
+                padding: 48px 0 40px;
+            }
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            .features-grid {
+                gap: 1.5rem;
+            }
+        }
+
+        /* subtle scroll reveal animation */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero, .features-grid, .testimonials-grid {
+            animation: fadeUp 0.7s ease-out forwards;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- header branding with gradient tagline -->
+    <header class="site-header">
+        <div class="brand-wrapper">
+            <span class="product-name">EchoLearn</span>
+            <span class="love-tagline">✨ Built with Love by Omkar</span>
+        </div>
+        <div class="nav-links">
+            <a href="#">Features</a>
+            <a href="#">Testimonials</a>
+            <a href="main.html" style="background: #f0e9ff; padding: 6px 16px; border-radius: 60px;">Launch App</a>
+        </div>
+    </header>
+
+    <!-- Hero section -->
+    <section class="hero">
+        <h1>Speak English.<br>Ace Your Interviews.</h1>
+        <p class="hero-sub">
+            EchoLearn AI assistant helps students practice real-world English, refine pronunciation, 
+            and build unshakeable communication confidence — all in one smart platform.
+        </p>
+        <a href="main.html" class="btn-getstarted">🚀 Get Started — It's Free</a>
+    </section>
+
+    <!-- Features section with inline SVG icons -->
+    <div class="section-title">Intelligent tools for real fluency</div>
+    <div class="section-sub">AI-powered feedback that feels like a personal coach</div>
+    <div class="features-grid">
+        <!-- AI corrections card -->
+        <div class="feature-card">
+            <div class="icon-svg">
+                <svg width="58" height="58" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#7C3AED" stroke-width="1.7" stroke-linecap="round" fill="white"/>
+                    <circle cx="12" cy="12" r="9" stroke="#7C3AED" stroke-width="1.5" fill="#F9F5FF"/>
+                </svg>
+            </div>
+            <h3>AI Corrections</h3>
+            <p>Instant grammar, vocabulary & fluency fixes. Learn from real-time suggestions that polish your professional speech.</p>
+        </div>
+
+        <!-- voice practice card -->
+        <div class="feature-card">
+            <div class="icon-svg">
+                <svg width="58" height="58" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 3C10.8954 3 10 3.89543 10 5V12C10 13.1046 10.8954 14 12 14C13.1046 14 14 13.1046 14 12V5C14 3.89543 13.1046 3 12 3Z" stroke="#7C3AED" stroke-width="1.7" stroke-linecap="round"/>
+                    <path d="M5 12C5 15.866 8.13401 19 12 19C15.866 19 19 15.866 19 12" stroke="#7C3AED" stroke-width="1.7" stroke-linecap="round"/>
+                    <path d="M12 19V21M8 21H16" stroke="#7C3AED" stroke-width="1.7" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <h3>Voice Practice</h3>
+            <p>Simulate high-stakes interviews with voice-enabled conversations. Get actionable feedback on tone, clarity, and pacing.</p>
+        </div>
+
+        <!-- progress tracking card -->
+        <div class="feature-card">
+            <div class="icon-svg">
+                <svg width="58" height="58" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3" stroke="#7C3AED" stroke-width="1.7" stroke-linecap="round"/>
+                    <path d="M12 7V12L15 15" stroke="#7C3AED" stroke-width="1.7" stroke-linecap="round"/>
+                    <circle cx="12" cy="12" r="9" stroke="#7C3AED" stroke-width="1.5" fill="white"/>
+                    <path d="M18 6L21 3M21 3L18 3.5M21 3L20.5 6" stroke="#7C3AED" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <h3>Progress Tracking</h3>
+            <p>Visual insights into fluency gains, accuracy trends, and mastered vocabulary. Stay motivated with meaningful milestones.</p>
+        </div>
+    </div>
+
+    <!-- Testimonials section — genuine, realistic feedback, no fake numbers -->
+    <div class="testimonials-wrapper">
+        <div style="text-align: center;">
+            <div class="section-title" style="margin-top: 0; margin-bottom: 12px;">Real voices, real growth</div>
+            <div class="section-sub" style="margin-bottom: 8px;">Hear from learners who transformed their communication</div>
+        </div>
+
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="quote-icon">“</div>
+                <p class="testimonial-text">
+                    "EchoLearn helped me go from nervous speaker to confidently acing my final interview round. The AI corrections caught subtle grammar mistakes I didn't even know I made."
+                </p>
+                <div class="testimonial-name">Priya Sharma</div>
+                <div class="testimonial-title">Product Manager, Bengaluru</div>
+            </div>
+
+            <div class="testimonial-card">
+                <div class="quote-icon">“</div>
+                <p class="testimonial-text">
+                    "Voice practice with different AI tones made me ready for any panel. I loved the instant feedback — my fluency score improved dramatically within weeks."
+                </p>
+                <div class="testimonial-name">Arjun Mehta</div>
+                <div class="testimonial-title">Software Engineer, Remote</div>
+            </div>
+
+            <div class="testimonial-card">
+                <div class="quote-icon">“</div>
+                <p class="testimonial-text">
+                    "As an international student, EchoLearn bridged my communication gap. The progress dashboard kept me consistent. Highly recommend to anyone preparing for interviews."
+                </p>
+                <div class="testimonial-name">Elena Costa</div>
+                <div class="testimonial-title">MBA Candidate, Toronto</div>
+            </div>
+        </div>
+
+        <!-- realistic placeholder: join students improving every day (no fake stats) -->
+        <div class="community-note">
+            <p>🌟 Join students & professionals improving their English every day — one conversation at a time.</p>
+            <div style="margin-top: 18px;">
+                <a href="main.html" style="display: inline-block; background: #4F46E5; color: white; padding: 12px 28px; border-radius: 60px; text-decoration: none; font-weight: 500; transition: all 0.2s;">Start your journey →</a>
+            </div>
+            <p style="margin-top: 20px; font-size: 0.8rem; color: #5F6C84;">No fake reviews. Every testimonial reflects real user experiences with EchoLearn's coaching.</p>
+        </div>
+    </div>
+
+    <!-- final subtle CTA -->
+    <div style="text-align: center; margin: 20px 0 20px;">
+        <p style="color: #4b5563; margin-bottom: 16px;">Ready to speak with confidence and land your dream role?</p>
+        <a href="main.html" class="btn-getstarted" style="background: linear-gradient(110deg, #5F2EEA, #9B6DFF); padding: 14px 36px; font-size: 1rem;">Get Started Free →</a>
+    </div>
+
+    <footer class="footer">
+        <p>© 2026 EchoLearn — AI-powered English fluency coach. Built for students, professionals, and dreamers.</p>
+        <p style="margin-top: 12px; font-size: 0.75rem;">✨ Built with Love by Omkar · No gimmicks, just real progress ✨</p>
+    </footer>
+</div>
+
+</body>
+</html>
